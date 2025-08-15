@@ -68,6 +68,7 @@ public class MessageService {
             && !(message.getMessageText().equals("")) && message.getMessageText().length() <= 255)
         {
             newMessage.setMessageText(message.getMessageText());
+            messageRepository.save(newMessage);
             return 1;
         }
         return 0;

@@ -82,7 +82,7 @@ public class SocialMediaController {
     }
     @PatchMapping("/messages/{messageId}")
     public int patchMessageByMessageId(@PathVariable Integer messageId, @RequestBody Message m) throws InvalidInputException{
-        if (messageService.updateMessage(m.getMessageId(), m) == 1)
+        if (messageService.updateMessage(messageId, m) == 1)
             return messageService.updateMessage(messageId, m);
         else{
             throw new InvalidInputException();
