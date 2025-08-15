@@ -51,9 +51,13 @@ public class SocialMediaController {
     @PostMapping("/login")
     public ResponseEntity<Account> postLogin(String username, String password){
         if(accountService.login(username, password) == null){
-            ResponseEntity.status(401);
+            return ResponseEntity.status(401).body(null);
         }
-        return ResponseEntity.ok(accountService.login(username, password));
+        else
+        {
+            return ResponseEntity.ok(accountService.login(username, password));
+        }
+        
     }
 
     @PostMapping("/messages")
