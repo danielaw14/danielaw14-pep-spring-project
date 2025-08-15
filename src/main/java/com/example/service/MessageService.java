@@ -55,21 +55,19 @@ public class MessageService {
         Message message = messageRepository.findMessageByMessageId(messageId);
         if ( message != null)
         {
-            messageRepository.deleteById(Integer.toUnsignedLong(messageId));
+            messageRepository.delete(messageRepository.findMessageByMessageId(messageId));
             return "(1)";
         }
         
         return "";
     }
 
-    public String updateMessage(Integer messageId, String messageText){
+    public String updateMessage(Integer messageId, Message message){
         if(messageRepository.findMessageByMessageId(messageId) != null 
-            && !messageText.equals("") && messageText.length() <= 255)
+            && !message.getMessageText().equals("") && message.getMessageText().length() <= 255)
         {
-            Message message = messageRepository.findMessageByMessageId(messageId);
-            Message updateMessage = new Message(messageId, message.getPostedBy(), messageText, message.getTimePostedEpoch());
-            messageRepository.deleteById(Integer.toUnsignedLong(messageId));
-            messageRepository.save(updateMessage);
+            Message newMessage = messageRepository.findMessageByMessageId(messageId);
+            newMessage.setMessageText(message.getMessageText());
             return "(1)";
         }
         return "";

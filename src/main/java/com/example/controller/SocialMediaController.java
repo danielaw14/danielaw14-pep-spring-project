@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -73,13 +74,13 @@ public class SocialMediaController {
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public String deleteMessageByMessageId(@PathVariable Integer messageId){
-       return messageService.deleteMessageByMessageId(messageId);
+    public String deleteMessageByMessageId(@RequestBody Message m){
+       return messageService.deleteMessageByMessageId(m.getMessageId());
     }
 
-    @PatchMapping("/messages/{messageId}")
-    public String patchMessageByMessageId(@PathVariable Integer messageId){
-       return messageService.updateMessage(messageId, getMessageByMessageId(messageId).getMessageText());
+    @PutMapping("/messages/{messageId}")
+    public String patchMessageByMessageId(@RequestBody Message m){
+       return messageService.updateMessage(m.getMessageId(), m);
     }
 
     @GetMapping("/accounts/{accountId}/messages")
