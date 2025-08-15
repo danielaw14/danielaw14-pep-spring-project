@@ -45,8 +45,6 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
-    @ExceptionHandler(UserDupeException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
     @PostMapping("/register")
     public Account postRegister(@RequestBody Account acc) throws UserDupeException, InvalidInputException{
         return accountService.register(acc.getUsername(), acc.getPassword());
