@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import org.hibernate.engine.transaction.jta.platform.internal.ResinJtaPlatform;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,14 +38,25 @@ public class SocialMediaController {
     }
 
     @PostMapping("/register")
-    public Account postRegister(String username, String password){
-        return accountService.register(username, password);
+    public ResponseEntity<Account> postRegister(String username, String password){
+        if (accountService.register(username, password) != null)
+            return ResponseEntity.ok(accountService.register(username, password));
+        else
+        {
+            return ResponseEntity.status(401).body(null);
+        }
     }
 
 
     @PostMapping("/login")
-    public Account postLogin(String username, String password){
-        return accountService.login(username, password);
+    public ResponseEntity<Account> postLogin(String username, String password){
+        if(accountService.login(username, password) != null){
+            return ResponseEntity.ok(accountService.login(username, password));
+        }
+        else
+        {
+            return ResponseEntity.status(401).body(null);
+        }
     }
 
     @PostMapping("/messages")
