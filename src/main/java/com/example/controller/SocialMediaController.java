@@ -50,15 +50,11 @@ public class SocialMediaController {
         return accountService.register(acc.getUsername(), acc.getPassword());
     }
 
-    @ExceptionHandler(LoginFailedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @PostMapping("/login")
     public Account postLogin(@RequestBody Account acc) throws LoginFailedException{
         return accountService.login(acc.getUsername(), acc.getPassword());
     }
 
-    @ExceptionHandler(MessageFailedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @PostMapping("/messages")
     public Message postMessage(@RequestBody Message m)
     {
