@@ -74,11 +74,11 @@ public class SocialMediaController {
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public int deleteMessageByMessageId(@PathVariable Integer messageId){
-        if (messageService.deleteMessageByMessageId(messageId) == 1)
-         return messageService.deleteMessageByMessageId(messageId);
-        else
-            return messageService.deleteMessageByMessageId(messageId);
+    public ResponseEntity<Integer> deleteMessageByMessageId(@PathVariable Integer messageId){
+        if (messageService.deleteMessageByMessageId(messageId) == 1){
+            return ResponseEntity.ok(1);
+        }
+        else return ResponseEntity.ok(null);
     }
     @PatchMapping("/messages/{messageId}")
     public int patchMessageByMessageId(@PathVariable Integer messageId, @RequestBody Message m) throws InvalidInputException{

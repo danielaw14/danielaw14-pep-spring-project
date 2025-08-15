@@ -53,13 +53,13 @@ public class MessageService {
 
     public int deleteMessageByMessageId(Integer messageId){
         Message message = messageRepository.findMessageByMessageId(messageId);
-        if ( message != null)
+        if (message != null)
         {
             messageRepository.delete(message);
             return 1;
         }
-        
-        return 0;
+        else
+            return 0;
     }
 
     public int updateMessage(Integer messageId, Message message){
