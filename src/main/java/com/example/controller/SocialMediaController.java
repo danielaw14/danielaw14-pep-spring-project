@@ -1,13 +1,16 @@
 package com.example.controller;
 
+import org.apache.tomcat.jni.User;
 import org.hibernate.engine.transaction.jta.platform.internal.ResinJtaPlatform;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -15,6 +18,9 @@ import javax.websocket.server.PathParam;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.exception.InvalidInputException;
+import com.example.exception.LoginFailedException;
+import com.example.exception.UserDupeException;
 import com.example.repository.AccountRepository;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
@@ -37,27 +43,29 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
+    
     @PostMapping("/register")
     public ResponseEntity<Account> postRegister(String username, String password){
-        if (accountService.register(username, password) != null)
+        try{
             return ResponseEntity.ok(accountService.register(username, password));
-        else
-        {
-            return ResponseEntity.status(401).body(null);
         }
+        catch (UserDupeException u){
+            return ResponseEntity.status(409).body(null);
+        }
+        catch (InvalidInputException i){
+            return ResponseEntity.status(400).body(null);
+        }
+        
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<Account> postLogin(String username, String password){
-        if(accountService.login(username, password) == null){
-            return ResponseEntity.status(401).body(null);
-        }
-        else
-        {
+        try{
             return ResponseEntity.ok(accountService.login(username, password));
         }
-        
+        catch(LoginFailedException l){
+            return ResponseEntity.status(401).body(null);
+        }
     }
 
     @PostMapping("/messages")
