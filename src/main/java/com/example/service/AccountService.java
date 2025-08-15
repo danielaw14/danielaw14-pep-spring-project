@@ -20,7 +20,7 @@ public class AccountService {
 
     public Account register(String username, String password) throws UserDupeException, InvalidInputException{
         if (accountRepository.findAccountByUsername(username) == null 
-            && !(username.equals("")) && password.length() >= 4){
+            && !(username == "") && password.length() >= 4){
             Account account = new Account(username, password);
             accountRepository.save(account);
             return accountRepository.findAccountByAccountId(account.getAccountId());
@@ -35,7 +35,8 @@ public class AccountService {
     }
 
     public Account login(String username, String password) throws LoginFailedException{
-        if(accountRepository.findAccountByUsernameAndPassword(username, password) != null)
+        Account account = accountRepository.findAccountByUsernameAndPassword(username, password);
+        if(!(account.equals(null)))
             return accountRepository.findAccountByUsernameAndPassword(username, password);
         else{
             throw new LoginFailedException();

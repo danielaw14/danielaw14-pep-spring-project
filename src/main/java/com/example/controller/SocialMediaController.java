@@ -69,9 +69,9 @@ public class SocialMediaController {
     }
 
     @PostMapping("/messages")
-    public Message postMessage(Integer postedBy, String messageText)
+    public Message postMessage(String messageText)
     {
-        return messageService.postMessage(postedBy, messageText, null);
+        return messageService.postMessage(null, messageText, null);
     }
 
     @GetMapping("/messages")
