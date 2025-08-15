@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -20,6 +21,7 @@ import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.exception.InvalidInputException;
 import com.example.exception.LoginFailedException;
+import com.example.exception.MessageFailedException;
 import com.example.exception.UserDupeException;
 import com.example.repository.AccountRepository;
 import com.example.service.AccountService;
@@ -43,17 +45,22 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
-    
+    @ExceptionHandler(UserDupeException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @PostMapping("/register")
     public Account postRegister(@RequestBody Account acc) throws UserDupeException, InvalidInputException{
         return accountService.register(acc.getUsername(), acc.getPassword());
     }
 
+    @ExceptionHandler(LoginFailedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @PostMapping("/login")
     public Account postLogin(@RequestBody Account acc) throws LoginFailedException{
         return accountService.login(acc.getUsername(), acc.getPassword());
     }
 
+    @ExceptionHandler(MessageFailedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @PostMapping("/messages")
     public Message postMessage(@RequestBody Message m)
     {

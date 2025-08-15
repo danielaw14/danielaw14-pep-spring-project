@@ -1,5 +1,4 @@
 package com.example.exception;
 
-
-public class UserDupeException extends Exception{
+public class UserDupeException extends Exception{ 
 }

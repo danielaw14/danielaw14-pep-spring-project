@@ -30,11 +30,15 @@ public class MessageService {
     public Message postMessage(Integer postedBy, String messageText, Long timePostedEpoch)
     {
         if (accountRepository.findAccountByAccountId(postedBy) != null 
-            && !messageText.equals("") && messageText.length() <= 255);
+            && !messageText.equals("") && messageText.length() <= 255)
         {
             Message message = new Message(postedBy, messageText, timePostedEpoch);
             messageRepository.save(message);
             return messageRepository.findMessageByMessageId(message.getMessageId());
+        }
+        else
+        {
+            return null;
         }
     }
 
