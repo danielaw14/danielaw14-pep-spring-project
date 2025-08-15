@@ -56,7 +56,7 @@ public class SocialMediaController {
     }
 
     @PostMapping("/messages")
-    public Message postMessage(@RequestBody Message m)
+    public Message postMessage(@RequestBody Message m) throws MessageFailedException
     {
         return messageService.postMessage(m.getPostedBy(), m.getMessageText(), m.getTimePostedEpoch());
     }

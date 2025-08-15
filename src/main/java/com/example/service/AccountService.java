@@ -36,7 +36,7 @@ public class AccountService {
 
     public Account login(String username, String password) throws LoginFailedException{
         Account account = accountRepository.findAccountByUsernameAndPassword(username, password);
-        if(!(account.equals(null)))
+        if((account != null))
             return accountRepository.findAccountByUsernameAndPassword(username, password);
         else{
             throw new LoginFailedException();

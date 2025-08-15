@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
+import com.example.exception.MessageFailedException;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 
@@ -27,7 +28,7 @@ public class MessageService {
     }
 
 
-    public Message postMessage(Integer postedBy, String messageText, Long timePostedEpoch)
+    public Message postMessage(Integer postedBy, String messageText, Long timePostedEpoch) throws MessageFailedException
     {
         if (accountRepository.findAccountByAccountId(postedBy) != null 
             && !messageText.equals("") && messageText.length() <= 255)
@@ -38,7 +39,7 @@ public class MessageService {
         }
         else
         {
-            return null;
+            throw new MessageFailedException();
         }
     }
 
