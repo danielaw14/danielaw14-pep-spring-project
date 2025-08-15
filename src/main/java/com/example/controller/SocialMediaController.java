@@ -50,7 +50,7 @@ public class SocialMediaController {
 
     @PostMapping("/login")
     public ResponseEntity<Account> postLogin(String username, String password){
-        if(accountService.login(username, password) != null){
+        if(!accountService.login(username, password).equals(null)){
             return ResponseEntity.ok(accountService.login(username, password));
         }
         else
