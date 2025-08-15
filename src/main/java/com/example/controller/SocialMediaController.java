@@ -74,12 +74,19 @@ public class SocialMediaController {
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public String deleteMessageByMessageId(@RequestBody Message m){
-         return messageService.deleteMessageByMessageId(m.getMessageId());
+    public int deleteMessageByMessageId(@PathVariable Integer messageId){
+        if (messageService.deleteMessageByMessageId(messageId) == 1)
+         return messageService.deleteMessageByMessageId(messageId);
+        else
+            return 0;
     }
     @PatchMapping("/messages/{messageId}")
-    public String patchMessageByMessageId(@RequestBody Message m){
-        return messageService.updateMessage(m.getMessageId(), m);
+    public int patchMessageByMessageId(@RequestBody Message m) throws InvalidInputException{
+        if (messageService.updateMessage(m.getMessageId(), m) == 1)
+            return messageService.updateMessage(m.getMessageId(), m);
+        else{
+            throw new InvalidInputException();
+        }
     }
 
     @GetMapping("/accounts/{accountId}/messages")

@@ -51,26 +51,26 @@ public class MessageService {
         return messageRepository.findMessageByMessageId(messageId);
     }
 
-    public String deleteMessageByMessageId(Integer messageId){
+    public int deleteMessageByMessageId(Integer messageId){
         Message message = messageRepository.findMessageByMessageId(messageId);
         if ( message != null)
         {
             messageRepository.delete(message);
-            return "1";
+            return 1;
         }
         
-        return "";
+        return 0;
     }
 
-    public String updateMessage(Integer messageId, Message message){
+    public int updateMessage(Integer messageId, Message message){
         if(messageRepository.findMessageByMessageId(messageId) != null 
             && !message.getMessageText().equals("") && message.getMessageText().length() <= 255)
         {
             Message newMessage = messageRepository.findMessageByMessageId(messageId);
             newMessage.setMessageText(message.getMessageText());
-            return "1";
+            return 1;
         }
-        return "";
+        return 0;
     }
     
     public List<Message> getMessagesByUser(Integer postedBy){
