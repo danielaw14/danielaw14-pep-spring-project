@@ -78,7 +78,7 @@ public class SocialMediaController {
        return messageService.deleteMessageByMessageId(m.getMessageId());
     }
 
-    @PutMapping("/messages/{messageId}")
+    @PatchMapping("/messages/{messageId}")
     public String patchMessageByMessageId(@RequestBody Message m){
        return messageService.updateMessage(m.getMessageId(), m);
     }
