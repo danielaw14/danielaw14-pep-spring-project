@@ -78,12 +78,12 @@ public class SocialMediaController {
         if (messageService.deleteMessageByMessageId(messageId) == 1)
          return messageService.deleteMessageByMessageId(messageId);
         else
-            return 0;
+            return messageService.deleteMessageByMessageId(messageId);
     }
     @PatchMapping("/messages/{messageId}")
-    public int patchMessageByMessageId(@RequestBody Message m) throws InvalidInputException{
+    public int patchMessageByMessageId(@PathVariable Integer messageId, @RequestBody Message m) throws InvalidInputException{
         if (messageService.updateMessage(m.getMessageId(), m) == 1)
-            return messageService.updateMessage(m.getMessageId(), m);
+            return messageService.updateMessage(messageId, m);
         else{
             throw new InvalidInputException();
         }

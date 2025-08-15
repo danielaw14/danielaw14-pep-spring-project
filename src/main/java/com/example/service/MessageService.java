@@ -63,10 +63,10 @@ public class MessageService {
     }
 
     public int updateMessage(Integer messageId, Message message){
-        if(messageRepository.findMessageByMessageId(messageId) != null 
-            && !message.getMessageText().equals("") && message.getMessageText().length() <= 255)
+        Message newMessage = messageRepository.findMessageByMessageId(messageId);
+        if(message != null 
+            && !(message.getMessageText().equals("")) && message.getMessageText().length() <= 255)
         {
-            Message newMessage = messageRepository.findMessageByMessageId(messageId);
             newMessage.setMessageText(message.getMessageText());
             return 1;
         }
