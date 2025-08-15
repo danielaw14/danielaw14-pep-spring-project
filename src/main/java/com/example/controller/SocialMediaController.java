@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import org.apache.tomcat.jni.User;
 import org.hibernate.engine.transaction.jta.platform.internal.ResinJtaPlatform;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -45,33 +45,19 @@ public class SocialMediaController {
 
     
     @PostMapping("/register")
-    public ResponseEntity<Account> postRegister(String username, String password){
-        try{
-            return ResponseEntity.ok(accountService.register(username, password));
-        }
-        catch (UserDupeException u){
-            return ResponseEntity.status(409).body(null);
-        }
-        catch (InvalidInputException i){
-            return ResponseEntity.status(400).body(null);
-        }
-        
+    public Account postRegister(@RequestBody Account acc) throws UserDupeException, InvalidInputException{
+        return accountService.register(acc.getUsername(), acc.getPassword());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Account> postLogin(String username, String password){
-        try{
-            return ResponseEntity.ok(accountService.login(username, password));
-        }
-        catch(LoginFailedException l){
-            return ResponseEntity.status(401).body(null);
-        }
+    public Account postLogin(@RequestBody Account acc) throws LoginFailedException{
+        return accountService.login(acc.getUsername(), acc.getPassword());
     }
 
     @PostMapping("/messages")
-    public Message postMessage(String messageText)
+    public Message postMessage(@RequestBody Message m)
     {
-        return messageService.postMessage(null, messageText, null);
+        return messageService.postMessage(m.getPostedBy(), m.getMessageText(), m.getTimePostedEpoch());
     }
 
     @GetMapping("/messages")
@@ -91,8 +77,8 @@ public class SocialMediaController {
     }
 
     @PatchMapping("/messages/{messageId}")
-    public String patchMessageByMessageId(@PathVariable Integer messageId, String messageText){
-       return messageService.updateMessage(messageId, messageText);
+    public String patchMessageByMessageId(@PathVariable Integer messageId){
+       return messageService.updateMessage(messageId, getMessageByMessageId(messageId).getMessageText());
     }
 
     @GetMapping("/accounts/{accountId}/messages")
